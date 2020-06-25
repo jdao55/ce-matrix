@@ -19,7 +19,7 @@ struct ctmatrix {
     constexpr ctmatrix<T,n,m>& operator=(ctmatrix<T,n,m>&& cp) = default;
 
     template<size_t s>
-    constexpr ctmatrix<T,n,s> operator*(const ctmatrix<T, m ,s>& rhs) const{
+    [[nodiscard]] constexpr ctmatrix<T,n,s> operator*(const ctmatrix<T, m ,s>& rhs) const{
         ctmatrix<T,n,s> ret;
         for (auto i = 0; i < n; ++i)
         {
@@ -28,6 +28,42 @@ struct ctmatrix {
                     ret.at(i,j)+= this->at(i,k)*rhs.at(k,j);
                 }
             }
+        }
+        return ret;
+    }
+    
+    [[nodiscard]]constexpr ctmatrix<T,n,m> operator*(const T& rhs) const
+    {
+         ctmatrix<T,n,m> ret;
+         for (auto i=0; i < n*m; i++)
+         {
+             ret.data[i]= data[i] * rhs;
+         }
+         return ret;
+    }
+
+    [[nodiscard]]friend constexpr ctmatrix<T,n,m> operator*(const T& lhs, const ctmatrix<T,n,m>& rhs)
+    {
+        return rhs*lhs;
+    }
+
+
+   [[nodiscard]] constexpr ctmatrix<T,n,m> operator+(const ctmatrix<T,n,m>& rhs) const
+    {
+        ctmatrix<T,n,m> ret;
+        for (auto i=0; i < n*m; i++)
+        {
+             ret.data[i]= data[i] + rhs.data[i];
+        }
+        return ret;
+    }
+
+    [[nodiscard]]constexpr ctmatrix<T,n,m> operator-(const ctmatrix<T,n,m>& rhs) const
+    {
+        ctmatrix<T,n,m> ret;
+        for (auto i=0; i < n*m; i++)
+        {
+             ret.data[i]= data[i] - rhs.data[i];
         }
         return ret;
     }
@@ -48,6 +84,20 @@ struct ctmatrix {
     constexpr const T& operator[](size_t i) const
     {
         return data[i];
+    }
+
+    //template<typename Tn, size_t r, size_t c>
+    constexpr ctmatrix<T,m,n> transpose () const
+    {
+        ctmatrix<T,m,n> ret;
+        for(auto i = 0; i< m; i++)
+        {
+            for(auto j = 0; j< n; j++)
+                {
+                    ret.at(i,j) = this->at(j,i);
+                }
+        }
+        return ret;
     }
 };
 };
