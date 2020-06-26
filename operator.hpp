@@ -1,9 +1,11 @@
 #ifndef OPERATOR_H
 #define OPERATOR_H
 #include "matrix.hpp"
+#include "numeric_trait.hpp"
 namespace ce {
 
-template<typename T, size_t n, size_t m> constexpr ctmatrix<T, n, m> ctmatrix<T, n, m>::operator*(const T &rhs) const
+template<numeric T, size_t n, size_t m>
+constexpr ctmatrix<T, n, m> ctmatrix<T, n, m>::operator*(const T &rhs) const
 {
     ctmatrix<T, n, m> ret;
     for (size_t i = 0; i < n * m; i++)
@@ -13,7 +15,7 @@ template<typename T, size_t n, size_t m> constexpr ctmatrix<T, n, m> ctmatrix<T,
     return ret;
 }
 
-template<typename T, size_t n, size_t m>
+template<numeric T, size_t n, size_t m>
 template<size_t s>
 constexpr ctmatrix<T, n, s> ctmatrix<T, n, m>::operator*(const ctmatrix<T, m, s> &rhs) const
 {
@@ -31,7 +33,7 @@ constexpr ctmatrix<T, n, s> ctmatrix<T, n, m>::operator*(const ctmatrix<T, m, s>
     return ret;
 }
 
-template<typename T, size_t n, size_t m>
+template<numeric T, size_t n, size_t m>
 constexpr ctmatrix<T, n, m> ctmatrix<T, n, m>::operator+(const ctmatrix<T, n, m> &rhs) const
 {
     ctmatrix<T, n, m> ret;
@@ -43,7 +45,7 @@ constexpr ctmatrix<T, n, m> ctmatrix<T, n, m>::operator+(const ctmatrix<T, n, m>
 }
 
 
-template<typename T, size_t n, size_t m>
+template<numeric T, size_t n, size_t m>
 [[nodiscard]] constexpr ctmatrix<T, n, m> ctmatrix<T, n, m>::operator-(const ctmatrix<T, n, m> &rhs) const
 {
     ctmatrix<T, n, m> ret;

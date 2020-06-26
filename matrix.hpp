@@ -3,10 +3,11 @@
 #include <iostream>
 #include <algorithm>
 #include <array>
-
+#include "numeric_trait.hpp"
 namespace ce {
 
-template<typename T, size_t n, size_t m> struct ctmatrix
+template<numeric T, size_t n, size_t m>
+struct ctmatrix
 {
     std::array<T, n * m> data;
 
@@ -18,7 +19,8 @@ template<typename T, size_t n, size_t m> struct ctmatrix
     constexpr ctmatrix<T, n, m> &operator=(const ctmatrix<T, n, m> &cp) = default;
     constexpr ctmatrix<T, n, m> &operator=(ctmatrix<T, n, m> &&cp) = default;
 
-    template<size_t s>[[nodiscard]] constexpr ctmatrix<T, n, s> operator*(const ctmatrix<T, m, s> &rhs) const;
+    template<size_t s>
+    [[nodiscard]] constexpr ctmatrix<T, n, s> operator*(const ctmatrix<T, m, s> &rhs) const;
 
     [[nodiscard]] constexpr ctmatrix<T, n, m> operator*(const T &rhs) const;
 
