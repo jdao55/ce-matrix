@@ -6,7 +6,7 @@
 #include "numeric_trait.hpp"
 namespace ce {
 
-template<numeric T, size_t n, size_t m>
+template<numeric T, size_t n, size_t m = n>
 struct ctmatrix
 {
     std::array<T, n * m> data;
@@ -58,6 +58,18 @@ struct ctmatrix
         }
         return ret;
     }
+
+    static constexpr ctmatrix<T, n, m> identity()
+    {
+        static_assert(m==n,"error non square identity matrix");
+        ctmatrix<T, n, m> ret{};
+        for(size_t i=0; i<n*m; i+=(n+1))
+        {
+            ret[i]=static_cast<T>(1);
+        }
+        return ret;
+    }
+
 };
 }// namespace ce
 

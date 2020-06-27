@@ -2,6 +2,7 @@
 #define OPERATOR_H
 #include "matrix.hpp"
 #include "numeric_trait.hpp"
+
 namespace ce {
 
 template<numeric T, size_t n, size_t m>
@@ -37,7 +38,7 @@ template<numeric T, size_t n, size_t m>
 constexpr ctmatrix<T, n, m> ctmatrix<T, n, m>::operator+(const ctmatrix<T, n, m> &rhs) const
 {
     ctmatrix<T, n, m> ret;
-    for (auto i = 0; i < n * m; i++)
+    for (size_t i = 0; i < n * m; i++)
     {
         ret.data[i] = data[i] + rhs.data[i];
     }
