@@ -46,6 +46,8 @@ struct ctmatrix
     constexpr const T &at(const size_t i, const size_t j) const { return data[i * m + j]; }
     constexpr T &at(const size_t i, const size_t j) { return data[i * m + j]; }
 
+    constexpr bool operator==(const const ctmatrix<T, n, m> &rhs) const { return data == rhs.data; }
+
     constexpr ctmatrix<T, m, n> transpose() const
     {
         ctmatrix<T, m, n> ret;
@@ -58,39 +60,23 @@ struct ctmatrix
         }
         return ret;
     }
-    constexpr const auto begin() const
-    {
-        return data.begin();
-    }
-    constexpr auto begin()
-    {
-        return data.begin();
-    }
+    constexpr const auto begin() const { return data.begin(); }
+    constexpr auto begin() { return data.begin(); }
 
-    constexpr const auto end() const
-    {
-        return data.end();
-    }
-    constexpr auto end()
-    {
-        return data.end();
-    }
-
+    constexpr const auto end() const { return data.end(); }
+    constexpr auto end() { return data.end(); }
 
 
     static constexpr ctmatrix<T, n, m> identity()
     {
-        static_assert(m==n,"error non square identity matrix");
+        static_assert(m == n, "error non square identity matrix");
         ctmatrix<T, n, m> ret{};
-        for(size_t i=0; i<n*m; i+=(n+1))
+        for (size_t i = 0; i < n * m; i += (n + 1))
         {
-            ret[i]=static_cast<T>(1);
+            ret[i] = static_cast<T>(1);
         }
         return ret;
     }
-
-
-
 };
 }// namespace ce
 
