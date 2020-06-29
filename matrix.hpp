@@ -58,6 +58,25 @@ struct ctmatrix
         }
         return ret;
     }
+    constexpr const auto begin() const
+    {
+        return data.begin();
+    }
+    constexpr auto begin()
+    {
+        return data.begin();
+    }
+
+    constexpr const auto end() const
+    {
+        return data.end();
+    }
+    constexpr auto end()
+    {
+        return data.end();
+    }
+
+
 
     static constexpr ctmatrix<T, n, m> identity()
     {
@@ -69,6 +88,8 @@ struct ctmatrix
         }
         return ret;
     }
+
+
 
 };
 }// namespace ce
