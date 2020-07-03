@@ -46,7 +46,7 @@ struct ctmatrix
     constexpr const T &at(const size_t i, const size_t j) const { return data[i * m + j]; }
     constexpr T &at(const size_t i, const size_t j) { return data[i * m + j]; }
 
-    constexpr bool operator==(const const ctmatrix<T, n, m> &rhs) const { return data == rhs.data; }
+    constexpr bool operator==(const ctmatrix<T, n, m> &rhs) const { return data == rhs.data; }
 
     constexpr ctmatrix<T, m, n> transpose() const
     {
