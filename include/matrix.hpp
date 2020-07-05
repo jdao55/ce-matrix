@@ -13,6 +13,9 @@ struct ctmatrix
 
     constexpr ctmatrix() : data(){};
     constexpr ctmatrix(std::initializer_list<T> l) { std::copy(l.begin(), l.end(), data.begin()); }
+    constexpr explicit ctmatrix(T init):data{}{
+        std::fill(data.begin(), data.end(), init);
+    }
     constexpr ctmatrix(const ctmatrix<T, n, m> &cp) = default;
     constexpr ctmatrix(ctmatrix<T, n, m> &&cp) = default;
 
