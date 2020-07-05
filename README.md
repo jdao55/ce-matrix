@@ -106,7 +106,7 @@ template<size_t s>
 ```
 [[nodiscard]] constexpr ctmatrix<T, n, m> operator-(const ctmatrix<T, n, m> &rhs) const;
 ```
-#### Container access overloads
+#### Container access overloads and functions
 ```c++
 constexpr T &operator[](size_t i) { return data[i]; }
 ```
@@ -149,7 +149,7 @@ constexpr T dot_product(const vector<T, N> &lhs, const vector<T, N> &rhs)
 template<numeric T>
 constexpr vector<T, 3> cross_product(const vector<T, 3> &lhs, const vector<T, 3> &rhs)
 ```
-- Cross product between two 3 by 1 vectors
+- Cross product between 3 by 1 vectors
  
 # Examples
 ```c++
@@ -159,8 +159,8 @@ constexpr ce::ctmatrix<int, 3, 3> A{ 0, 1, 2,
 //create 3x3 matrix of ones
 constexpr ce::ctmatrix<int, 3, 3> B(1);
 
-//creat 4x4 indentify matrix
-constexpr auto ce::matrix<double, 4>::indenity();
+//create 4x4 identity matrix
+constexpr auto i4 = ce::matrix<double, 4>::identity();
     
 //matrix binary operators
 constexpr auto C1 = A*B;
@@ -169,15 +169,15 @@ constexpr auto C2 = 4*A; //element wise multiplication
 constexpr auto C3 = A+B;
 constexpr auto C4= A-B;
 
-//contruct vecotor
+//construct vector
 constexpr ce::vector<std::complex, 4> cmplx4;
 
 //vector dot prouct
 constexpr ce::vector<int, 2> vec1{1,2};
 constexpr ce::vector<int, 2> vec2{3,4};
-constexpr auto res = ce::vector::dot(vec1,v vec2);
+constexpr auto dot_res = ce::vector::dot(vec1, vec2);
 //vector cross
-constexpr auto res = ce::vector::cross(vec1,v vec2);
+constexpr auto cross_res = ce::vector::cross(vec1, vec2);
 
 
 ```
