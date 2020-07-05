@@ -15,13 +15,13 @@ concept Subractable = requires(T x)
 template<typename T>
 concept Multipliable = requires(T x)
 {
-    x *x;
+    x * x;
 };
 
 template<typename T>
 concept Dividable = requires(T x)
 {
-    x *x;
+    x / x;
 };
 
 template<typename T>
