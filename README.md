@@ -84,7 +84,7 @@ template<numeric T, size_t N, size_T>  constexpr ctmatrix(std::initializer_list<
 ``` c++
 static constexpr ctmatrix<T, n, m> identity()
 ```
-- returns N by N identity matrix (compile time error if n!=m)using vector = ctmatrix<T, N, 1>;
+- returns N by N identity matrix (compile time error if n!=m)
 
 ### Operator overloads
 #### Mulitplication overloads
