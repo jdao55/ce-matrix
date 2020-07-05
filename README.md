@@ -20,7 +20,7 @@ int main()
 
 ```
 The matrix mulitplication of A*B is evaluated at compile time   
-above program is compiled to:(using gcc10.1 with flags: ```-S -std=c++2a -masm=intel```) mulitplication of A*B is evaluated at c
+The above program is compiled to:(using gcc10.1 with flags: ```-S -std=c++2a -masm=intel```)
 ```asm
 main:
 	push	rbp
