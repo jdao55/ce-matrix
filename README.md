@@ -1,5 +1,5 @@
 # ce-matrix
-c++20 compile time (constexpr) hearder only matrix library
+c++20 compile time (constexpr) header only matrix library
 ```c++
 /*
 0 1 2   1 1 1
