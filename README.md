@@ -1,5 +1,5 @@
 # ce-matrix
-c++20 compile time (constexpr) hearder only matrix library
+c++20 compile time (constexpr) header only matrix library (WIP Expect api to change)
 ```c++
 /*
 0 1 2   1 1 1
@@ -19,8 +19,8 @@ int main()
 }
 
 ```
-The matric mulitplication of A*B is evaluated at compile time   
-(using gcc10.1 with flags: ```-S -std=c++2a -masm=intel```)
+The matrix mulitplication of A*B is evaluated at compile time   
+The above program is compiled to:(using gcc10.1 with flags: ```-S -std=c++2a -masm=intel```)
 ```asm
 main:
 	push	rbp
@@ -61,10 +61,126 @@ main:
 	leave
 	ret
 ```
+# Dependancies
+- c++20 compliant compiler
+     - currently working on gcc-10.1, more compilers will be supported as they get better c++20 supportDependancies
 # DOCUMENTATION
-TODO
+## Matrix Class
+### Contructors
+```c++
+template<numeric T, size_t N, size_T> constexpr ctmatrix()
+```
+- default construct a N by M matrix
 
+```c++
+template<numeric T, size_t N, size_T> constexpr ctmatrix(T init)
+```
+- construct a N by M matrix, with each elemeent initialized to init
+
+```c++
+template<numeric T, size_t N, size_T>  constexpr ctmatrix(std::initializer_list<T> l)
+```
+- initialize N by M matrix with initializer_list
+``` c++
+static constexpr ctmatrix<T, n, m> identity()
+```
+- returns N by N identity matrix (compile time error if n!=m)
+
+### Operator overloads
+#### Mulitplication overloads
+```c++
+template<size_t s>
+[[nodiscard]] constexpr ctmatrix<T, n, s> operator*(const ctmatrix<T, m, s> &rhs) const;
+```
+
+```c++
+[[nodiscard]] constexpr ctmatrix<T, n, m> operator*(const T &rhs) const;
+```
+```c++
+[[nodiscard]] friend constexpr ctmatrix<T, n, m> operator*(const T &lhs, const ctmatrix<T, n, m> &rhs)
+```
+#### addition/subtraction overloads
+```
+[[nodiscard]] constexpr ctmatrix<T, n, m> operator+(const ctmatrix<T, n, m> &rhs) const;
+```
+```
+[[nodiscard]] constexpr ctmatrix<T, n, m> operator-(const ctmatrix<T, n, m> &rhs) const;
+```
+#### Container access overloads and functions
+```c++
+constexpr T &operator[](size_t i) { return data[i]; }
+```
+```c++
+constexpr const T &operator[](size_t i) const { return data[i]; }
+```
+```c++
+constexpr const T &operator()(const size_t i, const size_t j) const;
+```
+- return const reference to element in ith row and ith column
+```
+constexpr const T &operator()(const size_t i, const size_t j);
+```
+
+```c++
+constexpr const T &at(const size_t i, const size_t j) const ;
+```
+```c++
+constexpr T &at(const size_t i, const size_t j);
+```
+```c++
+constexpr bool operator==(const ctmatrix<T, n, m> &rhs) const;
+```
+#### other functions
+```c++
+constexpr ctmatrix<T, m, n> transpose() const;
+```
+- return transpose of matrix
+### Vector fuctions
+```c++
+using vector = ctmatrix<T, N, 1>;
+```
+- definition of vector ie N by 1 matrix
+```c++
+template<numeric T, size_t N>
+constexpr T dot_product(const vector<T, N> &lhs, const vector<T, N> &rhs)
+```
+- Dot product between 2 vectors
+```c++
+template<numeric T>
+constexpr vector<T, 3> cross_product(const vector<T, 3> &lhs, const vector<T, 3> &rhs)
+```
+- Cross product between 3 by 1 vectors
+ 
 # Examples
-TODO
+```c++
+constexpr ce::ctmatrix<int, 3, 3> A{ 0, 1, 2,
+                                     3, 4, 5, 
+                                     6, 7, 8};
+//create 3x3 matrix of ones
+constexpr ce::ctmatrix<int, 3, 3> B(1);
+
+//create 4x4 identity matrix
+constexpr auto i4 = ce::matrix<double, 4>::identity();
+    
+//matrix binary operators
+constexpr auto C1 = A*B;
+constexpr auto C2 = A*4; //element wise multiplication
+constexpr auto C2 = 4*A; //element wise multiplication
+constexpr auto C3 = A+B;
+constexpr auto C4= A-B;
+
+//construct vector
+constexpr ce::vector<std::complex, 4> cmplx4;
+
+//vector dot prouct
+constexpr ce::vector<int, 2> vec1{1,2};
+constexpr ce::vector<int, 2> vec2{3,4};
+constexpr auto dot_res = ce::vector::dot(vec1, vec2);
+//vector cross
+constexpr auto cross_res = ce::vector::cross(vec1, vec2);
+
+
+```
+
 
 
