@@ -8,17 +8,17 @@
 
 namespace ce {
 
-template<numeric T, size_t N>
-using vector = ctmatrix<T, N, 1>;
+template<traits::numeric T, size_t N>
+using vector = matrix<T, N, 1>;
 
 namespace vec {
-    template<numeric T, size_t N>
+    template<traits::numeric T, size_t N>
     constexpr T dot_product(const vector<T, N> &lhs, const vector<T, N> &rhs)
     {
         return std::inner_product(lhs.begin(), lhs.end(), rhs.begin(), 0);
     }
 
-    template<numeric T>
+    template<traits::numeric T>
     constexpr vector<T, 3> cross_product(const vector<T, 3> &lhs, const vector<T, 3> &rhs)
     {
         return vector<T, 3>{
