@@ -33,8 +33,10 @@ struct matrix
 
 
     [[nodiscard]] constexpr matrix<T, N, M> operator+(const matrix<T, N, M> &rhs) const;
+    constexpr void operator+=(const matrix<T, N, M> &rhs);
 
     [[nodiscard]] constexpr matrix<T, N, M> operator-(const matrix<T, N, M> &rhs) const;
+    constexpr void operator-=(const matrix<T, N, M> &rhs);
 
 
     constexpr T &operator[](size_t i) { return data[i]; }
@@ -56,7 +58,7 @@ struct matrix
         {
             for (size_t j = 0; j < N; j++)
             {
-                ret.at(i, j) = this->at(j, i);
+                ret(i, j) = this->at(j, i);
             }
         }
         return ret;
