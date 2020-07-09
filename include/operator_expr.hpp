@@ -20,7 +20,7 @@ namespace ce {
     };
 
     template <typename E1, typename E2>
-    matrixSum<E1, E2>
+    constexpr matrixSum<E1, E2>
     operator+(matrix_expr<E1> const& u, matrix_expr<E2> const& v) {
 
         return matrixSum<E1, E2>(*static_cast<const E1*>(&u), *static_cast<const E2*>(&v));
