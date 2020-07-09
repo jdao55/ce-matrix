@@ -25,5 +25,32 @@ namespace ce {
 
         return matrixSum<E1, E2>(*static_cast<const E1*>(&u), *static_cast<const E2*>(&v));
     }
+
+
+    template<typename E1, typename E2>
+    struct matrixSub :public matrix_expr<matrixSub<E1, E2>>{
+        E1 const & _u;
+        E2 const & _v;
+
+        constexpr matrixSub(E1 const&u, E2 const&v):_u(u), _v(v){}
+        constexpr size_t size() const { return _u.size();}
+        constexpr size_t row_count()  const { return _u.row_count(); }
+        constexpr size_t col_count()  const { return _v.col_count(); }
+        constexpr auto operator()(const size_t i, const size_t j) const
+        {
+            return _u(i,j) - _v(i,j);
+        }
+
+    };
+
+    template <typename E1, typename E2>
+    constexpr matrixSub<E1, E2>
+    operator-(matrix_expr<E1> const& u, matrix_expr<E2> const& v) {
+
+        return matrixSub<E1, E2>(*static_cast<const E1*>(&u), *static_cast<const E2*>(&v));
+    }
+
+
+
 }
 #endif
