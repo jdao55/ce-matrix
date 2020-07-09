@@ -1,6 +1,6 @@
 #ifndef MATRIX_H
 #define MATRIX_H
-#include <iostream>
+
 #include <algorithm>
 #include <array>
 #include "numeric_trait.hpp"
