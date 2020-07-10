@@ -1,5 +1,5 @@
 # ce-matrix
-c++20 compile time (constexpr) header only matrix library (WIP Expect api to change)
+c++20 compile time (constexpr), header only and expression template matrix library (WIP Expect api to change)
 ```c++
 /*
 0 1 2   1 1 1
@@ -65,6 +65,7 @@ main:
 - c++20 compliant compiler
      - currently working on gcc-10.1, more compilers will be supported as they get better c++20 supportDependancies
 # DOCUMENTATION
+TODO updat
 ## Matrix Class
 ### Contructors
 ```c++
