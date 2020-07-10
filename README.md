@@ -65,7 +65,7 @@ main:
 - c++20 compliant compiler
      - currently working on gcc-10.1, more compilers will be supported as they get better c++20 supportDependancies
 # DOCUMENTATION
-TODO updat
+TODO update documentation for expression templates rewrite
 ## Matrix Class
 ### Contructors
 ```c++
