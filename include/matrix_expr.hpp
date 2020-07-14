@@ -5,18 +5,22 @@
 #include <array>
 #include "numeric_trait.hpp"
 namespace ce {
-template<typename T>
+
+template<typename T, size_t Row_count_, size_t Col_count_>
 struct matrix_expr
 {
+    static constexpr size_t row_count = Row_count_;
+    static constexpr size_t col_count = Col_count_;
     // constexpr data_t operator[](const size_t i) const { return static_cast<T const &>(*this)[i]; }
     constexpr auto operator()(const size_t i, const size_t j) const { return static_cast<T const &>(*this)(i, j); }
     constexpr size_t size() const { return static_cast<T const &>(*this).size(); }
-    constexpr size_t row_count() const { return static_cast<T const &>(*this).row_count(); }
-    constexpr size_t col_count() const { return static_cast<T const &>(*this).col_count(); }
 };
 
+
+
+
 template<traits::numeric data_t, size_t row_c, size_t col_c>
-struct matrix_t : public matrix_expr<matrix_t<data_t, row_c, col_c>>
+struct matrix_t : public matrix_expr<matrix_t<data_t, row_c, col_c>, row_c, col_c>
 {
     std::array<data_t, row_c * col_c> data;
 
@@ -28,12 +32,10 @@ struct matrix_t : public matrix_expr<matrix_t<data_t, row_c, col_c>>
     constexpr matrix_t(matrix_t<data_t, row_c, col_c> &&cp) = default;
     // matrix info
     constexpr size_t size() const { return row_c * col_c; }
-    constexpr size_t row_count() const { return row_c; }
-    constexpr size_t col_count() const { return col_c; }
 
     // expression ctor
     template<typename E>
-    constexpr matrix_t(matrix_expr<E> const &expr) : data{}
+    constexpr matrix_t(matrix_expr<E,row_c, col_c> const &expr) : data{}
     {
         for (size_t i = 0; i < row_c; ++i)
         {
