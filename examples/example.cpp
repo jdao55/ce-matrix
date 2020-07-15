@@ -6,11 +6,11 @@
 int main()
 {
 
-    constexpr ce::matrix_t<int, 3, 3> A{ 1, 1, 2, 3, 4, 5, 6, 7, 8 };
+    constexpr ce::matrix_t<int, 2, 3> A{ 1, 1, 2, 3, 4, 5 };
     constexpr ce::matrix_t<int, 3, 3> B{ 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
-    constexpr ce::matrix_t<int, 3, 3> C{ 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-    constexpr ce::matrix_t<int, 3, 3> res = A+B;
+    constexpr ce::matrix_t<int, 3, 3> C{ 1, 1, 2, 3, 4, 5, 6, 7, 8 };
+    ce::matrix_t<int, 2, 3> res = A*C;
     int i=0;
     std::ranges::for_each(res.data, [&](int a){
                                             std::cout<<a<<" ";
