@@ -11,6 +11,7 @@ int main()
 
     constexpr ce::matrix_t<int, 3, 3> C{ 1, 1, 2, 3, 4, 5, 6, 7, 8 };
     ce::matrix_t<int, 2, 3> res = A*C;
+    res+=A;
     int i=0;
     std::ranges::for_each(res.data, [&](int a){
                                             std::cout<<a<<" ";
