@@ -64,6 +64,8 @@ main:
 # Dependancies
 - c++20 compliant compiler
      - currently working on gcc-10.1, more compilers will be supported as they get better c++20 supportDependancies
+- for benchmarks and examples
+	- [nanobench](https://nanobench.ankerl.com/index.html)
 # DOCUMENTATION
 TODO update documentation for expression templates rewrite
 ## Matrix Class
