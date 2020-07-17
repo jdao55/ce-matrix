@@ -13,7 +13,7 @@ int main()
                                          6, 7, 8};
     constexpr ce::matrix_t<int, 3, 3> B{ 1, 1, 1,
                                          1, 1, 1, 
-                                         1, 1, 1};;
+                                         1, 1, 1};
     constexpr ce::matrix_t<int, 3, 3> C = A*B;
     return C[0];
 }
