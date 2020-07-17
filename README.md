@@ -8,13 +8,13 @@ c++20 compile time (constexpr), header only and expression template matrix libra
 */
 int main()
 {
-    constexpr ce::ctmatrix<int, 3, 3> A{ 0, 1, 2,
+    constexpr ce::matrix_t<int, 3, 3> A{ 0, 1, 2,
                                          3, 4, 5, 
                                          6, 7, 8};
-    constexpr ce::ctmatrix<int, 3, 3> B{ 1, 1, 1,
+    constexpr ce::matrix_t<int, 3, 3> B{ 1, 1, 1,
                                          1, 1, 1, 
                                          1, 1, 1};;
-    constexpr auto C = A*B;
+    constexpr ce::matrix_t<int, 3, 3> C = A*B;
     return C[0];
 }
 
