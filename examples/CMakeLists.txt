@@ -26,7 +26,7 @@ if (ENABLE_PCH)
   target_precompile_headers(project_options INTERFACE <vector> <string> <map> <utility>)
 endif()
 
-add_executable(examples example.cpp)
+add_executable(examples example.cpp nanobench.o)
 
  target_compile_options(examples PRIVATE  -fverbose-asm)
 target_link_libraries(examples PRIVATE project_options project_warnings)
