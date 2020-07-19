@@ -69,10 +69,10 @@ struct matrixMult : public matrix_expr<matrixMult<E1, E2, row_c, col_c>, row_c, 
 
     constexpr auto operator()(const size_t i, const size_t j) const
     {
-        auto ret = _u(i,0) * _v(0,j);
-        for(size_t k = 1; k<E1::col_count; ++k)
+        auto ret = _u(i, 0) * _v(0, j);
+        for (size_t k = 1; k < E1::col_count; ++k)
         {
-            ret +=  _u(i,k) * _v(k,j);
+            ret += _u(i, k) * _v(k, j);
         }
         return ret;
     }
@@ -87,40 +87,72 @@ constexpr matrixMult<E1, E2, E1::row_count, E2::col_count> operator*(
     return matrixMult<E1, E2, E1::row_count, E2::col_count>(*static_cast<const E1 *>(&u), *static_cast<const E2 *>(&v));
 }
 
- /*****************************
- **plus equal/minus************
- *****************************/
-template<traits::numeric T, typename E2,size_t N, size_t M>
-constexpr void operator+=( matrix_t<T,N,M> &lhs, const E2&rhs)
+/*****************************
+**plus equal/minus************
+*****************************/
+template<traits::numeric T, typename E2, size_t N, size_t M>
+constexpr void operator+=(matrix_t<T, N, M> &lhs, const E2 &rhs)
 {
 
     static_assert(N == E2::row_count, "Addition between different sized matrices");
     static_assert(M == E2::col_count, "Addition between different sized matrices");
     for (size_t i = 0; i < N; i++)
     {
-        for (size_t j = 0; j<M; ++j)
+        for (size_t j = 0; j < M; ++j)
         {
-            lhs.at(i,j) = lhs.at(i,j) + rhs(i,j);
+            lhs.at(i, j) = lhs.at(i, j) + rhs(i, j);
         }
     }
 }
 
-template<traits::numeric T, typename E2,size_t N, size_t M>
-constexpr void operator-=( matrix_t<T,N,M> &lhs, const E2&rhs)
+template<traits::numeric T, typename E2, size_t N, size_t M>
+constexpr void operator-=(matrix_t<T, N, M> &lhs, const E2 &rhs)
 {
 
     static_assert(N == E2::row_count, "Addition between different sized matrices");
     static_assert(M == E2::col_count, "Addition between different sized matrices");
     for (size_t i = 0; i < N; i++)
     {
-        for (size_t j = 0; j<M; ++j)
+        for (size_t j = 0; j < M; ++j)
         {
-            lhs.at(i,j) = lhs.at(i,j) - rhs(i,j);
+            lhs.at(i, j) = lhs.at(i, j) - rhs(i, j);
         }
     }
 }
+/*****************************
+**scaler operators************
+*****************************/
+
+template<traits::numeric T, size_t N, size_t M>
+constexpr matrix_t<T, N, M> operator*(const matrix_t<T, N, M> lhs, const T &rhs)
+{
+    matrix_t<T, N, M> ret;
+    std::ranges::transform(lhs, ret.begin(), [&rhs](const auto &elem) { return elem * rhs; });
+    return ret;
+}
 
 
+template<traits::numeric T, size_t N, size_t M>
+constexpr matrix_t<T, N, M> operator*(const T &lhs, const matrix_t<T, N, M> rhs)
+{
+    return rhs * lhs;
+}
+
+
+template<traits::numeric T, size_t N, size_t M>
+constexpr matrix_t<T, N, M> operator/(const matrix_t<T, N, M> lhs, const T &rhs)
+{
+    matrix_t<T, N, M> ret;
+    std::ranges::transform(lhs, ret.begin(), [&rhs](const auto &elem) { return elem / rhs; });
+    return ret;
+}
+
+
+template<traits::numeric T, size_t N, size_t M>
+constexpr matrix_t<T, N, M> operator/(const T &lhs, const matrix_t<T, N, M> rhs)
+{
+    return rhs / lhs;
+}
 
 }// namespace ce
 #endif

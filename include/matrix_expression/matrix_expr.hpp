@@ -28,6 +28,8 @@ struct matrix_t : public matrix_expr<matrix_t<data_t, row_c, col_c>, row_c, col_
     constexpr matrix_t() : data(){};
     constexpr matrix_t(std::initializer_list<data_t> l) { std::copy(l.begin(), l.end(), data.begin()); }
     constexpr explicit matrix_t(data_t init) : data{} { std::fill(data.begin(), data.end(), init); }
+    constexpr matrix_t(std::array<data_t, row_c*col_c> arr):data(arr){}
+    constexpr matrix_t(std::array<data_t, row_c*col_c> &&arr):data(arr){}
     constexpr matrix_t(const matrix_t<data_t, row_c, col_c> &cp) = default;
     constexpr matrix_t(matrix_t<data_t, row_c, col_c> &&cp) = default;
     // matrix info

@@ -3,5 +3,6 @@
 #include "matrix_expression/matrix_expr.hpp"
 #include "matrix_expression/operator_expr.hpp"
 #include "matrix_expression/vector.hpp"
+#include "matrix_expression/algorithm.hpp"
 
 #endif
