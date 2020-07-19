@@ -43,13 +43,13 @@ constexpr matrix_t<T, M, N> transpose(const matrix_t<T, N, M> &mat)
 template<traits::numeric T, size_t N, size_t M>
 constexpr T sum(const matrix_t<T, N, M> &mat)
 {
-    return std::accumulate(mat.begin(), mat.end(), mat[0]);
+    return std::reduce(mat.begin()+1, mat.end(), mat[0]);
 }
 
 template<traits::numeric T, size_t N, size_t M>
 constexpr T product(const matrix_t<T, N, M> &mat)
 {
-    return std::accumulate(mat.begin(), mat.end(), mat[0], [](const T &a, const T &b) { return a * b; });
+    return std::reduce(mat.begin()+1, mat.end(), mat[0], [](const T &a, const T &b) { return a * b; });
 }
 }// namespace ce
 
