@@ -26,11 +26,15 @@ if (ENABLE_PCH)
   target_precompile_headers(project_options INTERFACE <vector> <string> <map> <utility>)
 endif()
 
-add_executable(examples example.cpp nanobench.o)
+add_executable(examples example.cpp)
+add_executable(bench benchmarks.cpp nanobench.o)
 
- target_compile_options(examples PRIVATE  -fverbose-asm)
-target_link_libraries(examples PRIVATE project_options project_warnings)
+
+find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+target_link_libraries(examples PRIVATE project_options project_warnings Eigen3::Eigen)
+target_link_libraries(bench PRIVATE project_options project_warnings Eigen3::Eigen)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
-  target_compile_options(examples PRIVATE -O3 -fconcepts-ts)
+  target_compile_options(examples PRIVATE -Ofast -fconcepts-ts)
+  target_compile_options(bench PRIVATE -Ofast -fconcepts-ts)
 endif ()
