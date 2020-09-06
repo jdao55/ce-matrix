@@ -8,7 +8,7 @@
 #include "../include/old_stuff/matrix.hpp"
 #include "../include/old_stuff/operator.hpp"
 
-constexpr auto N =64;
+constexpr auto N = 16;
 using fmatNN_t = ce::matrix_t<float, N, N>;
 using fmatNN = ce::matrix<float, N, N>;
 
@@ -47,7 +47,7 @@ void benchnormal(ankerl::nanobench::Bench *bench)
     const fmatNN c = rand_ce_mat();
 
     bench->run("normal", [&]() {
-        float res = (a * b + a * c)(2, 1);
+        fmatNN res = (a * b + a * c);
         ankerl::nanobench::doNotOptimizeAway(res);
     });
 }
@@ -59,7 +59,7 @@ void bench_expr(ankerl::nanobench::Bench *bench)
     const fmatNN_t c = rand_ce_expr_mat();
 
     bench->run("expr", [&]() {
-        float res = (a * b + a * c)(2, 1);
+        fmatNN_t res = (a * b + a * c);
         ankerl::nanobench::doNotOptimizeAway(res);
     });
 }
@@ -70,7 +70,7 @@ void bench_Eigen(ankerl::nanobench::Bench *bench)
     const Eigen::Matrix<float, N, N> c = Eigen::Matrix<float, N, N>::Random();
 
     bench->run("Eigen", [&]() {
-        float res = (a * b + a * c)(2, 1);
+        Eigen::Matrix<float, N, N> res = (a * b + a * c);
         ankerl::nanobench::doNotOptimizeAway(res);
     });
 }
