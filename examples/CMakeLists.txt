@@ -26,6 +26,7 @@ if (ENABLE_PCH)
   target_precompile_headers(project_options INTERFACE <vector> <string> <map> <utility>)
 endif()
 
+include_directories(../include)
 add_executable(examples example.cpp)
 add_executable(bench benchmarks.cpp nanobench.o)
 
