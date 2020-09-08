@@ -5,6 +5,7 @@
 #include <type_traits>
 #include <utility>
 #include <cstddef>
+#include <complex>
 namespace vari {
 namespace traits {
 
@@ -62,9 +63,10 @@ requires traits::indexable_t<lhs_t> &&traits::indexable_t<rhs_t> class multexpr
 };
 
 template<typename LHS, typename RHS>
-requires constexpr auto operator*(const LHS &lhs, const RHS &rhs)
+constexpr auto operator*(const LHS &lhs, const RHS &rhs)
 {
-    return expr{ [](const auto &l, const auto &r) { return l * r; }, lhs, rhs };
+    constexpr auto f = [](const auto &l, const auto &r) { return l * r; };
+    return expr<decltype(f), LHS::row_size, RHS::col_size, LHS, RHS>{ f, lhs, rhs };
 }
 
 
@@ -77,17 +79,20 @@ requires traits::indexable_t<LHS> &&traits::indexable_t<RHS> constexpr auto oper
 template<typename LHS, typename RHS>
 constexpr auto operator+(const LHS &lhs, const RHS &rhs)
 {
-    return expr{ [](const auto &l, const auto &r) { return l + r; }, lhs, rhs };
+    constexpr auto f = [](const auto &l, const auto &r) { return l + r; };
+    return expr<decltype(f), LHS::row_size, RHS::col_size, LHS, RHS>(f, lhs, rhs);
 }
 
 enum class RowOrder {
     colunm,
     row,
 };
-}// namespace vari
+
 template<int R_, int C_ = R_, vari::RowOrder order_ = vari::RowOrder::row>
 struct mat
 {
+    constexpr static size_t row_size = R_;
+    constexpr static size_t col_size = C_;
     std::array<int, C_ * R_> data;
 
     template<typename src_t>
