@@ -17,8 +17,6 @@ struct matrix_expr
 };
 
 
-
-
 template<traits::numeric data_t, size_t row_c, size_t col_c>
 struct matrix_t : public matrix_expr<matrix_t<data_t, row_c, col_c>, row_c, col_c>
 {
@@ -28,8 +26,8 @@ struct matrix_t : public matrix_expr<matrix_t<data_t, row_c, col_c>, row_c, col_
     constexpr matrix_t() : data(){};
     constexpr matrix_t(std::initializer_list<data_t> l) { std::copy(l.begin(), l.end(), data.begin()); }
     constexpr explicit matrix_t(data_t init) : data{} { std::fill(data.begin(), data.end(), init); }
-    constexpr matrix_t(std::array<data_t, row_c*col_c> arr):data(arr){}
-    constexpr matrix_t(std::array<data_t, row_c*col_c> &&arr):data(arr){}
+    constexpr matrix_t(std::array<data_t, row_c * col_c> arr) : data(arr) {}
+    constexpr matrix_t(std::array<data_t, row_c * col_c> &&arr) : data(arr) {}
     constexpr matrix_t(const matrix_t<data_t, row_c, col_c> &cp) = default;
     constexpr matrix_t(matrix_t<data_t, row_c, col_c> &&cp) = default;
     // matrix info
@@ -37,7 +35,7 @@ struct matrix_t : public matrix_expr<matrix_t<data_t, row_c, col_c>, row_c, col_
 
     // expression ctor
     template<typename E>
-    constexpr matrix_t(matrix_expr<E,row_c, col_c> const &expr) : data{}
+    constexpr matrix_t(matrix_expr<E, row_c, col_c> const &expr) : data{}
     {
         for (size_t i = 0; i < row_c; ++i)
         {
@@ -50,7 +48,7 @@ struct matrix_t : public matrix_expr<matrix_t<data_t, row_c, col_c>, row_c, col_
 
     // element access
     constexpr data_t &operator[](size_t i) { return data[i]; }
-    constexpr const data_t &operator[](size_t i) const { return data[i]; }
+    constexpr const data_t operator[](size_t i) const { return data[i]; }
 
     constexpr auto operator()(const size_t i, const size_t j) const { return data[i * col_c + j]; }
     constexpr auto &operator()(const size_t i, const size_t j) { return data[i * col_c + j]; }
