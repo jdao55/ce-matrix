@@ -3,22 +3,23 @@
 #include <random>
 #include <iostream>
 #include <atomic>
-
+#include <memory>
 #include "../include/cematrix.hpp"
 #include "../include/old_stuff/matrix.hpp"
 #include "../include/old_stuff/operator.hpp"
 
-constexpr auto N = 16;
-using fmatNN_t = ce::matrix_t<float, N, N>;
-using fmatNN = ce::matrix<float, N, N>;
+constexpr auto N = 128;
+using sc_t = int;
+using fmatNN_t = ce::matrix_t<sc_t, N, N>;
+using fmatNN = ce::matrix<sc_t, N, N>;
 
 std::random_device rd;
 ankerl::nanobench::Rng e2(rd());
-std::uniform_real_distribution<float> dist(-5000, 5000);
+std::uniform_int_distribution<sc_t> dist(-5000, 5000);
 
 fmatNN rand_ce_mat()
 {
-    std::array<float, N * N> ret{};
+    std::array<sc_t, N * N> ret{};
     for (auto &element : ret)
     {
         element = dist(e2);
@@ -30,7 +31,7 @@ fmatNN rand_ce_mat()
 
 fmatNN_t rand_ce_expr_mat()
 {
-    std::array<float, N * N> ret{};
+    std::array<sc_t, N * N> ret{};
     for (auto &element : ret)
     {
         element = dist(e2);
@@ -65,12 +66,12 @@ void bench_expr(ankerl::nanobench::Bench *bench)
 }
 void bench_Eigen(ankerl::nanobench::Bench *bench)
 {
-    const Eigen::Matrix<float, N, N> a = Eigen::Matrix<float, N, N>::Random();
-    const Eigen::Matrix<float, N, N> b = Eigen::Matrix<float, N, N>::Random();
-    const Eigen::Matrix<float, N, N> c = Eigen::Matrix<float, N, N>::Random();
+    const Eigen::Matrix<sc_t, N, N> a = Eigen::Matrix<sc_t, N, N>::Random();
+    const Eigen::Matrix<sc_t, N, N> b = Eigen::Matrix<sc_t, N, N>::Random();
+    const Eigen::Matrix<sc_t, N, N> c = Eigen::Matrix<sc_t, N, N>::Random();
 
     bench->run("Eigen", [&]() {
-        Eigen::Matrix<float, N, N> res = (a * b + a * c);
+        Eigen::Matrix<sc_t, N, N> res = (a * b + a * c);
         ankerl::nanobench::doNotOptimizeAway(res);
     });
 }
@@ -79,7 +80,7 @@ int main()
 {
 
     ankerl::nanobench::Bench b;
-    b.title("Expression templates benchmark").unit("expr").warmup(100).relative(true);
+    b.title("Expression templates benchmark").unit("expr").warmup(500).relative(true);
     b.performanceCounters(true);
     bench_Eigen(&b);
     bench_expr(&b);

@@ -37,5 +37,5 @@ target_link_libraries(bench PRIVATE project_options project_warnings Eigen3::Eig
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
   target_compile_options(examples PRIVATE -Ofast -fconcepts-ts)
-  target_compile_options(bench PRIVATE -Ofast -fconcepts-ts)
+  target_compile_options(bench PRIVATE -O3 -fconcepts-ts)
 endif ()
