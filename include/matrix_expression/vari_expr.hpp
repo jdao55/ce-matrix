@@ -20,6 +20,20 @@ namespace traits {
                        || std::is_same<T, std::complex<double>>::value;
 
 }// namespace traits
+ //
+
+template<typename operand>
+constexpr auto subscript(const operand &v, const size_t i, const size_t j)
+{
+    if constexpr (std::is_arithmetic<operand>::value || std::is_same<operand, std::complex<float>>::value
+                  || std::is_same<operand, std::complex<double>>::value)
+    {
+        return v;
+    }
+    else
+        return v(i, j);
+}
+
 template<typename callable, size_t R_, size_t C_, class... operands>
 class expr
 {
@@ -68,7 +82,16 @@ template<typename lhs_t, typename rhs_t>
         const rhs_t &rhs)
 {
     constexpr auto f = [](const auto &l, const auto &r) { return l * r; };
-    return expr<decltype(f), lhs_t::row_size, rhs_t::col_size, lhs_t, rhs_t>{ f, lhs, rhs };
+    return expr<decltype(f), lhs_t::row_size, lhs_t::col_size, lhs_t, rhs_t>{ f, lhs, rhs };
+}
+
+
+template<typename lhs_t, typename rhs_t>
+requires(traits::scaler_t<lhs_t> &&traits::indexable_t<rhs_t>) constexpr auto operator*(const lhs_t &lhs,
+    const rhs_t &rhs)
+{
+    constexpr auto f = [](const auto &l, const auto &r) { return l * r; };
+    return expr<decltype(f), rhs_t::row_size, rhs_t::col_size, lhs_t, rhs_t>{ f, lhs, rhs };
 }
 
 
@@ -143,16 +166,6 @@ struct mat
         return data[j * R_ + i];
     }
 };
-
-template<typename operand>
-constexpr auto subscript(const operand &v, const size_t i, const size_t j)
-{
-    if constexpr (std::is_arithmetic<operand>::value)
-    {
-        return v;
-    }
-    return v(i, j);
-}
 
 
 }// namespace vari
