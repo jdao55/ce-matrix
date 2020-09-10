@@ -1,8 +1,8 @@
 #ifndef CEMATRIX_H
 #define CEMATRIX_H
-#include "matrix_expression/matrix_expr.hpp"
-#include "matrix_expression/operator_expr.hpp"
-#include "matrix_expression/vector.hpp"
-#include "matrix_expression/algorithm.hpp"
+#include "crtp/matrix_expr.hpp"
+#include "crtp/operator_expr.hpp"
+#include "crtp/vector.hpp"
+#include "crtp/algorithm.hpp"
 
 #endif

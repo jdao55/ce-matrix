@@ -4,7 +4,8 @@
 #include <algorithm>
 #include <array>
 #include "numeric_trait.hpp"
-namespace ce {
+
+namespace ce::noexpr {
 
 template<traits::numeric T, size_t N, size_t M = N>
 struct matrix
@@ -81,6 +82,6 @@ struct matrix
         return ret;
     }
 };
-}// namespace ce
+}// namespace ce::noexpr
 
 #endif

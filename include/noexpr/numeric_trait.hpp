@@ -1,7 +1,7 @@
-#ifndef TRAITS_H
-#define TRAITS_H
+#ifndef NOEXPR_TRAITS_H
+#define NOEXPR_TRAITS_H
 
-namespace ce::traits {
+namespace ce::noexpr::traits {
 
 template<typename T>
 concept Addable = requires(T x)
@@ -29,6 +29,7 @@ concept Dividable = requires(T x)
 
 template<typename T>
 concept numeric = Addable<T> &&Subractable<T> &&Multipliable<T> &&Dividable<T>;
-}// namespace ce::traits
+
+}// namespace ce::noexpr::traits
 
 #endif

@@ -6,7 +6,7 @@
 
 #include <numeric>
 
-namespace ce {
+namespace ce::crtp {
 
 template<traits::numeric T, size_t N>
 using vector = matrix_t<T, N, 1>;
@@ -27,5 +27,5 @@ namespace vec {
     }
 }// namespace vec
 
-}// namespace ce
+}// namespace ce::crtp
 #endif
