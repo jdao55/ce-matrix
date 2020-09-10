@@ -37,24 +37,23 @@ class expr
     }
 };
 
-template<typename callable, size_t R_, size_t C_, typename rhs_t, typename lhs_t>
-requires traits::indexable_t<lhs_t> &&traits::indexable_t<rhs_t> class multexpr
+template<size_t R_, size_t C_, typename lhs_t, typename rhs_t>
+class multexpr
 {
-    callable f_;
-    rhs_t &rhs;
-    lhs_t &lhs;
+    const lhs_t &lhs;
+    const rhs_t &rhs;
 
   public:
     constexpr static size_t row_size = R_;
     constexpr static size_t col_size = C_;
-    constexpr multexpr(callable f, rhs_t &r, lhs_t &l) : rhs(r), lhs(l), f_(f)
+    constexpr multexpr(const lhs_t &l, const rhs_t &r) : lhs(l), rhs(r)
     {
         static_assert(lhs_t::col_size == rhs_t::row_size, "Error lhs::colunm_size != rhs::row_size");
     }
     constexpr auto operator()(const size_t i, const size_t j) const
     {
         auto ret = lhs(i, 0) * rhs(0, j);
-        for (size_t k = 1; k < lhs_t::col_count; ++k)
+        for (size_t k = 1; k < lhs_t::col_size; ++k)
         {
             ret += lhs(i, k) * rhs(k, j);
         }
@@ -62,26 +61,40 @@ requires traits::indexable_t<lhs_t> &&traits::indexable_t<rhs_t> class multexpr
     }
 };
 
-template<typename LHS, typename RHS>
-constexpr auto operator*(const LHS &lhs, const RHS &rhs)
+
+template<typename lhs_t, typename rhs_t>
+    requires(traits::indexable_t<lhs_t> &&traits::scaler_t<rhs_t>)
+    || (traits::scaler_t<lhs_t> && traits::indexable_t<rhs_t>)constexpr auto operator*(const lhs_t &lhs,
+        const rhs_t &rhs)
 {
     constexpr auto f = [](const auto &l, const auto &r) { return l * r; };
-    return expr<decltype(f), LHS::row_size, RHS::col_size, LHS, RHS>{ f, lhs, rhs };
+    return expr<decltype(f), lhs_t::row_size, rhs_t::col_size, lhs_t, rhs_t>{ f, lhs, rhs };
 }
 
 
-template<typename LHS, typename RHS>
-requires traits::indexable_t<LHS> &&traits::indexable_t<RHS> constexpr auto operator*(const LHS &lhs, const RHS &rhs)
+template<typename lhs_t, typename rhs_t>
+requires traits::indexable_t<lhs_t> &&traits::indexable_t<rhs_t> constexpr auto operator*(const lhs_t &lhs,
+    const rhs_t &rhs)
 {
-    return multexpr{ [](const auto &l, const auto &r) { return l * r; }, lhs, rhs };
+    return multexpr<lhs_t::row_size, rhs_t::col_size, lhs_t, rhs_t>(lhs, rhs);
 }
 
-template<typename LHS, typename RHS>
-constexpr auto operator+(const LHS &lhs, const RHS &rhs)
+template<typename lhs_t, typename rhs_t>
+requires traits::indexable_t<lhs_t> &&traits::indexable_t<rhs_t> constexpr auto operator+(const lhs_t &lhs,
+    const rhs_t &rhs)
 {
     constexpr auto f = [](const auto &l, const auto &r) { return l + r; };
-    return expr<decltype(f), LHS::row_size, RHS::col_size, LHS, RHS>(f, lhs, rhs);
+    return expr<decltype(f), lhs_t::row_size, rhs_t::col_size, lhs_t, rhs_t>(f, lhs, rhs);
 }
+
+
+template<typename lhs_t, typename rhs_t>
+constexpr auto operator-(const lhs_t &lhs, const rhs_t &rhs)
+{
+    constexpr auto f = [](const auto &l, const auto &r) { return l - r; };
+    return expr<decltype(f), lhs_t::row_size, rhs_t::col_size, lhs_t, rhs_t>(f, lhs, rhs);
+}
+
 
 enum class RowOrder {
     colunm,
