@@ -4,36 +4,13 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
-#include <cstddef>
 #include <complex>
-namespace vari {
-namespace traits {
+#include "traits.hpp"
+#include "util.hpp"
+namespace ce::vari {
 
-    template<typename T>
-    concept indexable_t = requires(T t, size_t a)
-    {
-        t(a, a);
-    };
-
-    template<typename T>
-    concept scaler_t = std::is_arithmetic<T>::value || std::is_same<T, std::complex<float>>::value
-                       || std::is_same<T, std::complex<double>>::value;
-
-}// namespace traits
- //
-
-template<typename operand>
-constexpr auto subscript(const operand &v, const size_t i, const size_t j)
-{
-    if constexpr (std::is_arithmetic<operand>::value || std::is_same<operand, std::complex<float>>::value
-                  || std::is_same<operand, std::complex<double>>::value)
-    {
-        return v;
-    }
-    else
-        return v(i, j);
-}
-
+using namespace detail;
+using namespace utils;
 template<typename callable, size_t R_, size_t C_, class... operands>
 class expr
 {
@@ -119,56 +96,6 @@ constexpr auto operator-(const lhs_t &lhs, const rhs_t &rhs)
 }
 
 
-enum class RowOrder {
-    colunm,
-    row,
-};
-
-template<int R_, int C_ = R_, vari::RowOrder order_ = vari::RowOrder::row>
-struct mat
-{
-    constexpr static size_t row_size = R_;
-    constexpr static size_t col_size = C_;
-    std::array<int, C_ * R_> data;
-
-    template<typename src_t>
-    constexpr mat<R_, C_> &operator=(const src_t &src)
-    {
-        for (auto i = 0; i < R_; i++)
-        {
-            for (auto j = 0; j < C_; j++) operator()(i, j) = src(i, j);
-        }
-    }
-
-
-    template<typename src_t>
-    constexpr mat(const src_t &src)
-    {
-        for (auto i = 0; i < R_; i++)
-        {
-            for (auto j = 0; j < C_; j++) operator()(i, j) = src(i, j);
-        }
-    }
-
-    constexpr mat(std::initializer_list<int> l) { std::copy(l.begin(), l.end(), data.begin()); }
-
-    constexpr auto operator[](const size_t i) const { return data[i]; }
-    constexpr auto &operator()(const size_t i, const size_t j)
-    {
-        if constexpr (order_ == vari::RowOrder::row)
-            return data[i * C_ + j];
-        return data[j * R_ + i];
-    }
-    constexpr auto operator()(const size_t i, const size_t j) const
-    {
-        if constexpr (order_ == vari::RowOrder::row)
-            return data[i * C_ + j];
-        return data[j * R_ + i];
-    }
-};
-
-
-}// namespace vari
-
+}// namespace ce::vari
 
 #endif// __VARI_EXPR_H_

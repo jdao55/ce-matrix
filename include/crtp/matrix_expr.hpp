@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <array>
 #include "numeric_trait.hpp"
-namespace ce {
+namespace ce::crtp {
 
 template<typename T, size_t Row_count_, size_t Col_count_>
 struct matrix_expr
@@ -90,5 +90,5 @@ struct matrix_t : public matrix_expr<matrix_t<data_t, row_c, col_c>, row_c, col_
 };
 
 
-}// namespace ce
+}// namespace ce::crtp
 #endif

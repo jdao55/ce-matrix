@@ -3,7 +3,7 @@
 #include "matrix_expr.hpp"
 #include "numeric_trait.hpp"
 
-namespace ce {
+namespace ce::crtp {
 /******************************
  **Addition*******************
  *****************************/
@@ -154,5 +154,5 @@ constexpr matrix_t<T, N, M> operator/(const T &lhs, const matrix_t<T, N, M> rhs)
     return rhs / lhs;
 }
 
-}// namespace ce
+}// namespace ce::crtp
 #endif
