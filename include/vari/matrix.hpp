@@ -9,7 +9,7 @@ enum class RowOrder {
     row,
 };
 
-template<typename scaler_t, int R_, int C_ = R_, vari::RowOrder order_ = vari::RowOrder::row>
+template<typename scaler_t, size_t R_, size_t C_ = R_, vari::RowOrder order_ = vari::RowOrder::row>
 struct matrix_t
 {
     constexpr static size_t row_size = R_;
@@ -29,9 +29,9 @@ struct matrix_t
     template<typename src_t>
     constexpr matrix_t(const src_t &src)
     {
-        for (auto i = 0; i < R_; i++)
+        for (size_t i = 0; i < R_; i++)
         {
-            for (auto j = 0; j < C_; j++) operator()(i, j) = src(i, j);
+            for (size_t j = 0; j < C_; j++) operator()(i, j) = src(i, j);
         }
     }
 
@@ -50,6 +50,11 @@ struct matrix_t
             return data[i * C_ + j];
         return data[j * R_ + i];
     }
+
+    constexpr auto cbegin() const { return data.cbegin(); }
+    constexpr auto cend() const { return data.cend(); }
+    constexpr auto begin() { return data.begin(); }
+    constexpr auto end() { return data.end(); }
 };
 
 }// namespace ce::vari

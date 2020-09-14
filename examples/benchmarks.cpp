@@ -9,7 +9,8 @@
 #include "../include/noexpr/operator.hpp"
 #include "../include/vari/matrix.hpp"
 #include "../include/vari/vari_expr.hpp"
-
+#include "../include/crtp/matrix_expr.hpp"
+#include "../include/crtp/operator_expr.hpp"
 constexpr auto N = 8;
 using scaler_t = int;
 using fmatNN_crtp = ce::crtp::matrix_t<scaler_t, N, N>;
