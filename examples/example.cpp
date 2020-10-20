@@ -18,4 +18,6 @@ int main()
     constexpr vector_t<int, 3> v2{ 2, 3, 4 };
     constexpr auto v3 = ce::vari::dot_product(v1, v2);
     static_assert(v3 == 20, "error wrong dot product value");
+    constexpr auto sum = ce::vari::reduce(v1, 0, [](auto l, auto r) { return l + r; });
+    static_assert(sum == 6, "error wrong dot product value");
 }

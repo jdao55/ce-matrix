@@ -5,6 +5,7 @@
 #include <type_traits>
 #include <utility>
 #include <complex>
+#include <numeric>
 #include "traits.hpp"
 #include "util.hpp"
 namespace ce::vari {
@@ -95,7 +96,10 @@ constexpr auto operator-(const lhs_t &lhs, const rhs_t &rhs)
     return expr<decltype(f), lhs_t::row_size, rhs_t::col_size, lhs_t, rhs_t>(f, lhs, rhs);
 }
 
-
+constexpr auto reduce(const auto &matrix, auto init, auto lambda)
+{
+    return std::reduce(matrix.cbegin(), matrix.cend(), init, lambda);
+}
 }// namespace ce::vari
 
 #endif// __VARI_EXPR_H_

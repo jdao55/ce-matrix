@@ -26,5 +26,17 @@ constexpr auto cross_product(const vector_t<T, 3> &lhs, const vector_t<T, 3> &rh
     };
 }
 
+template<detail::traits::scaler_t T, size_t N>
+constexpr auto magnitude_sq(const vector_t<T, 3> &vec)
+{
+    return std::reduce(vec.cbegin(), vec.end(), 0, [](auto l, auto r) { return l * l + r * r; });
+}
+
+template<detail::traits::scaler_t T, size_t N>
+constexpr auto magnitude(const vector_t<T, 3> &vec)
+{
+    return std::reduce(vec.cbegin(), vec.end(), 0, [](auto l, auto r) { return l * l + r * r; });
+}
+
 }// namespace ce::vari
 #endif
